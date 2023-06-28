@@ -2,6 +2,13 @@ name: Pylint workflow
 
 on:
   workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      out:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -10,10 +17,10 @@ jobs:
     steps:
       - name: Linting
         run: |
-          pylint --output-format=json ${{ github.event.inputs.path }} > ${{ github.event.inputs.out}}
+          pylint --output-format=json ${{inputs.path }} > ${{inputs.out}}
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ github.event.inputs.out}}
+          path: ${{inputs.out}}
   
