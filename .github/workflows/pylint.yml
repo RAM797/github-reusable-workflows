@@ -11,16 +11,31 @@ on:
         type: string
 
 jobs:
-  build:
+  build_and_lint:
+    name: build_and_test
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+
       - name: Linting
         run: |
-          pylint --output-format=json ${{inputs.path }} > ${{inputs.out}}
+          pylint --output-format=json ${{ github.workspace }}/${{inputs.path }} > ${{ github.workspace }}/${{inputs.out}}
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
-          path: ${{inputs.out}}
-  
+          path: ${{ github.workspace }}/${{inputs.out}}
