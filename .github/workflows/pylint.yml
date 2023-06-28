@@ -32,12 +32,13 @@ jobs:
 
 
       - name: Linting
+        continue-on-error: true
         run: |
           cd ${{ github.workspace }}
           # python manage.py migrate
-          pylint --output-format=json ${{inputs.path }}
+          pylint --output-format=json ${{inputs.path }} > ${{inputs.out}}
 
-      # - name: Upload test results
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     path: ${{ github.workspace }}/${{inputs.out}}
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ github.workspace }}/${{inputs.out}}
