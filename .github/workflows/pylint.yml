@@ -1,0 +1,19 @@
+name: Pylint workflow
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Linting
+        run: |
+          pylint --output-format=json ${{ github.event.inputs.path }} > ${{ github.event.inputs.out}}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ github.event.inputs.out}}
+  
