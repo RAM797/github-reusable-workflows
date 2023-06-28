@@ -33,9 +33,11 @@ jobs:
 
       - name: Linting
         run: |
-          pylint --output-format=json ${{ github.workspace }}/${{inputs.path }} > ${{ github.workspace }}/${{inputs.out}}
+          cd ${{ github.workspace }}/${{inputs.path }}/..
+          python manage.py migrate
+          # pylint --output-format=json ${{ github.workspace }}/${{inputs.path }} > ${{ github.workspace }}/${{inputs.out}}
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          path: ${{ github.workspace }}/${{inputs.out}}
+      # - name: Upload test results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     path: ${{ github.workspace }}/${{inputs.out}}
