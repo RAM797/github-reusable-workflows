@@ -33,9 +33,9 @@ jobs:
 
       - name: Linting
         run: |
-          cd ${{ github.workspace }}/${{inputs.path }}/..
-          python manage.py migrate
-          # pylint --output-format=json ${{ github.workspace }}/${{inputs.path }} > ${{ github.workspace }}/${{inputs.out}}
+          cd ${{ github.workspace }}
+          # python manage.py migrate
+          pylint --output-format=json ${{inputs.path }}
 
       # - name: Upload test results
       #   uses: actions/upload-artifact@v3
