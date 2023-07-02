@@ -1,7 +1,11 @@
 name: Upload to S3
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      result: 
+        required: true
+        type: string
 
 env:
   AWS_ACCESS_KEY_ID: ${{secrets.AWS_GITHUB_ACTION_RESULTS_KEY_ID}}
@@ -26,10 +30,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install awscli==$AWS_CLI_VERSION 
 
+      - name: download result
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{inputs.result}}
+
       - name: upload to S3
         run: |
           echo "this is from github runner" > artifact.txt
           aws --version
-          aws s3 cp artifact.txt s3://${AWS_S3_BUCKET}/artifact.txt
+          aws s3 cp ${{inputs.result}} s3://${AWS_S3_BUCKET}/${{inputs.result}}
 
         
