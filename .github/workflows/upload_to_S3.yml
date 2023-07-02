@@ -1,0 +1,26 @@
+name: Pylint workflow
+
+on:
+  workflow_dispatch:
+    
+
+jobs:
+  upload_to_S3:
+    name: upload artifact to S3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: upload to S3
+        run: |
+          python upload_to_S3.py

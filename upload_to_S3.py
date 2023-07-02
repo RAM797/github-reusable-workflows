@@ -1,0 +1,1 @@
+print("Starting the upload to S3")
