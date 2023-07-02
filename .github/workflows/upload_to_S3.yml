@@ -39,6 +39,8 @@ jobs:
         run: |
           echo "this is from github runner" > artifact.txt
           aws --version
+          cat ${{inputs.result}}.json
+          echo $AWS_ACCESS_KEY_ID
           aws s3 cp ${{inputs.result}}.json s3://${AWS_S3_BUCKET}/${{inputs.result}}.json
 
         
