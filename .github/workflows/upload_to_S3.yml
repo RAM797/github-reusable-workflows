@@ -2,7 +2,13 @@ name: Upload to S3
 
 on:
   workflow_dispatch:
-    
+
+env:
+  AWS_ACCESS_KEY_ID: ${{secrets.GITHUB_ACTION_RESULTS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.GITHUB_ACTION_RESULTS_SECRET_KEY}}
+  AWS_DEFAULT_REGION: ${{secrets.GITHUB_ACTION_RESULTS_REGION}}
+  AWS_BUCKET_NAME: ${{secrets.GITHUB_ACTION_RESULTS_BUCKET}}
+  AWS_CLI_VERSION: 1.27.165
 
 jobs:
   upload_to_S3:
@@ -16,11 +22,14 @@ jobs:
           python-version: 3.9
 
 
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r ./.github/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install awscli==$AWS_CLI_VERSION 
 
       - name: upload to S3
-        run: ./.github/upload_to_S3.py
-        shell: python
+        run: |
+          echo "this is from github runner" > artifact.txt
+          aws s3 cp artifact.txt s3://${AWS_BUCKET_NAME}/artifact.txt
+
+        
