@@ -6,7 +6,6 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{secrets.GITHUB_ACTION_RESULTS_KEY_ID}}
   AWS_SECRET_ACCESS_KEY: ${{secrets.GITHUB_ACTION_RESULTS_SECRET_KEY}}
-  AWS_DEFAULT_REGION: ${{secrets.GITHUB_ACTION_RESULTS_REGION}}
   AWS_BUCKET_NAME: ${{secrets.GITHUB_ACTION_RESULTS_BUCKET}}
   AWS_CLI_VERSION: 1.27.165
 
@@ -30,6 +29,7 @@ jobs:
       - name: upload to S3
         run: |
           echo "this is from github runner" > artifact.txt
+          aws --version
           aws s3 cp artifact.txt s3://${AWS_BUCKET_NAME}/artifact.txt
 
         
