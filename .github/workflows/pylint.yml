@@ -3,10 +3,13 @@ name: Pylint workflow
 on:
   workflow_call:
     inputs:
-      path:
+      in:
         required: true
         type: string
       out:
+        required: true
+        type: string
+      name:
         required: true
         type: string
 
@@ -35,11 +38,11 @@ jobs:
         continue-on-error: true
         run: |
           cd ${{ github.workspace }}
-          # python manage.py migrate
-          pylint --output-format=json ${{inputs.path }} > ${{inputs.out}}
+          python manage.py migrate
+          pylint --output-format=json ${{inputs.in }} > ${{inputs.out}}/${{inputs.name}}.json
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
-          name: ${{inputs.out}}
-          path: ${{ github.workspace }}/${{inputs.out}}
+          name: ${{inputs.name}}
+          path: ${{ github.workspace }}/${{inputs.out}}/${{inputs.name}}.json
