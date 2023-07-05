@@ -1,17 +1,20 @@
 name: Upload to S3
 
+# on:
+#   workflow_call:
+#     inputs:
+#       result: 
+#         required: true
+#         type: string
+
 on:
-  workflow_call:
-    inputs:
-      result: 
-        required: true
-        type: string
+  workflow_dispatch:
 
 env:
   AWS_ACCESS_KEY_ID: ${{secrets.AWS_GITHUB_ACTION_RESULTS_KEY_ID}}
   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_GITHUB_ACTION_RESULTS_SECRET_KEY}}
   AWS_S3_BUCKET: ${{secrets.AWS_GITHUB_ACTION_RESULTS_BUCKET}}
-  # AWS_DEFAULT_REGION: ${{secrets.AWS_GITHUB_ACTION_RESULTS_REGION}}
+  AWS_DEFAULT_REGION: ${{secrets.AWS_GITHUB_ACTION_RESULTS_REGION}}
   AWS_CLI_VERSION: 1.27.165
 
 jobs:
@@ -30,17 +33,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install awscli==$AWS_CLI_VERSION 
 
-      - name: download result
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{inputs.result}}
+      # - name: download result
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: ${{inputs.result}}
 
       - name: upload to S3
         run: |
-          echo "this is from github runner" > artifact.txt
-          aws --version
-          cat ${{inputs.result}}.json
+          echo "this is from github runner" > artifact1.txt
+          # aws --version
+          # cat ${{inputs.result}}.json
           echo $AWS_ACCESS_KEY_ID
-          aws s3 cp ${{inputs.result}}.json s3://${AWS_S3_BUCKET}/${{inputs.result}}.json
+          aws s3 cp artifact1.txt s3://${AWS_S3_BUCKET}/artifact1.txt
 
         
